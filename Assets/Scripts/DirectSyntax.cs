@@ -11,6 +11,7 @@ public class DirectSyntax : MonoBehaviour
     {
         Keyboard myKeyboard = Keyboard.current;
         Gamepad myGamepad = Gamepad.current;
+        Mouse myMouse = Mouse.current;
 
         if (myKeyboard != null)
         {
@@ -28,6 +29,7 @@ public class DirectSyntax : MonoBehaviour
                 Debug.Log("Spacekey is pressed");
             }
         }
+
         if (myGamepad != null)
         {
             if (myGamepad.buttonWest.wasPressedThisFrame)
@@ -40,6 +42,20 @@ public class DirectSyntax : MonoBehaviour
             }
 
             Debug.Log(myGamepad.leftStick.ReadValue());
+        }
+
+        if (myMouse != null)
+        {
+            if (myMouse.leftButton.wasPressedThisFrame)
+            {
+                Debug.Log("Left Mouse Button was pressed this frame");
+            }
+            if (myMouse.scroll.ReadValue().y > 0)
+            {
+                Debug.Log("Scrolling Up");
+            }
+
+            Debug.Log(myMouse.position.ReadValue());
         }
     }
 }
