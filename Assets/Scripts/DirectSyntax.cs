@@ -10,6 +10,7 @@ public class DirectSyntax : MonoBehaviour
     void Update()
     {
         Keyboard myKeyboard = Keyboard.current;
+        Gamepad myGamepad = Gamepad.current;
 
         if (myKeyboard != null)
         {
@@ -26,6 +27,19 @@ public class DirectSyntax : MonoBehaviour
             {
                 Debug.Log("Spacekey is pressed");
             }
+        }
+        if (myGamepad != null)
+        {
+            if (myGamepad.buttonWest.wasPressedThisFrame)
+            {
+                Debug.Log("Button West was pressed this frame");
+            }
+            if (myGamepad.dpad.left.wasPressedThisFrame)
+            {
+                Debug.Log("Dpag Left was pressed this frame");
+            }
+
+            Debug.Log(myGamepad.leftStick.ReadValue());
         }
     }
 }
