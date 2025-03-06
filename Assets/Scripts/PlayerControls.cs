@@ -13,6 +13,13 @@ public class PlayerControls : MonoBehaviour
     [Header("Jump")]
     [SerializeField] float jumpForce;
 
+    [Header("Ground Check")]
+    [SerializeField] private float rayLength;
+    [SerializeField] private Transform leftPoint;
+    [SerializeField] private Transform rightPoint;
+    [SerializeField] private LayerMask detectLayer;
+
+    private bool grounded;
     private bool facingRight = true;
 
     private void Update()
@@ -22,6 +29,7 @@ public class PlayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GroundCheck();
         Move();
         Jump();
     }
@@ -49,8 +57,22 @@ public class PlayerControls : MonoBehaviour
     {
         if (input.tryToJump)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            if (grounded)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+
             input.tryToJump = false;
         }
+    }
+
+    private void GroundCheck()
+    {
+        RaycastHit2D hitLeft = Physics2D.Raycast(leftPoint.position, Vector2.down, rayLength, detectLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(rightPoint.position, Vector2.down, rayLength, detectLayer);
+        if (hitLeft || hitRight)
+            grounded = true;
+        else
+            grounded = false;
     }
 }
