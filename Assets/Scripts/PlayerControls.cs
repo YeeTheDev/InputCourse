@@ -10,10 +10,11 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Rigidbody2D rb;
 
-    // Start is called before the first frame update
-    void Start()
+    private bool facingRight = true;
+
+    private void Update()
     {
-        
+        Flip();
     }
 
     private void FixedUpdate()
@@ -21,8 +22,22 @@ public class PlayerControls : MonoBehaviour
         Move();
     }
 
-    void Move()
+    private void Move()
     {
         rb.velocity = new Vector2(speed * input.valueX, rb.velocity.y);
+    }
+
+    private void Flip()
+    {
+        if (facingRight && input.valueX < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            facingRight = !facingRight;
+        }
+        else if (!facingRight && input.valueX > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            facingRight = !facingRight;
+        }
     }
 }
