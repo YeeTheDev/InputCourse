@@ -5,12 +5,7 @@ using UnityEngine.InputSystem;
 
 public class GatherInput : MonoBehaviour
 {
-    [SerializeField] InputActionAsset actionAsset;
-
-    private InputAction jumpAction;
-    private InputAction moveAction;
-    private InputAction attackAction;
-    private InputActionMap playerNormal;
+    private Controls myControls;
 
     public float valueX;
     public bool tryToJump;
@@ -18,49 +13,38 @@ public class GatherInput : MonoBehaviour
 
     private void Awake()
     {
-        playerNormal = actionAsset.FindActionMap("PlayerNormal");
-        jumpAction = playerNormal.FindAction("Jump");
-        moveAction = playerNormal.FindAction("MoveHorizontal");
-        attackAction = playerNormal.FindAction("Attack");
+        myControls = new Controls();
     }
 
     private void OnEnable()
     {
-        jumpAction.performed += JumpExample;
-        jumpAction.canceled += JumpStopExample;
+        //myControls.PlayerNormal.Enable();
+        //myControls.PlayerNormal.Jump.Enable();
 
-        attackAction.performed += AttackExample;
-        attackAction.canceled += AttackStopExample;
+        myControls.PlayerNormal.Jump.performed += JumpExample;
+        myControls.PlayerNormal.Jump.canceled += JumpStopExample;
 
-        actionAsset.Enable();
-        //playerNormal.Enable();
-        //jumpAction.Enable();
+        myControls.PlayerNormal.Attack.performed += AttackExample;
+        myControls.PlayerNormal.Attack.canceled += AttackStopExample;
+
+        myControls.Enable();
     }
 
     private void OnDisable()
     {
-        actionAsset.Disable();
+        myControls.Disable();
 
-        jumpAction.performed -= JumpExample;
-        jumpAction.canceled -= JumpStopExample;
+        myControls.PlayerNormal.Jump.performed -= JumpExample;
+        myControls.PlayerNormal.Jump.canceled -= JumpStopExample;
 
-        attackAction.performed -= AttackExample;
-        attackAction.canceled -= AttackStopExample;
-        //playerNormal.Disable();
-        //jumpAction.Disable();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        myControls.PlayerNormal.Attack.performed -= AttackExample;
+        myControls.PlayerNormal.Attack.canceled -= AttackStopExample;
     }
 
 
     void Update()
     {
-        valueX = moveAction.ReadValue<float>();
-        Debug.Log("valueX: " + valueX);
+        valueX = myControls.PlayerNormal.MoveHorizontal.ReadValue<float>();
     }
 
     private void JumpExample(InputAction.CallbackContext value)
