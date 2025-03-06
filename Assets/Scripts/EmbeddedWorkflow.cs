@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 public class EmbeddedWorkflow : MonoBehaviour
 {
+    [SerializeField] private float speed;
+    [SerializeField] Rigidbody2D rb2D;
+    private Vector2 direction;
+
     public InputAction jumpAction;
     public InputAction moveAction;
     private bool exampleBool;
@@ -34,12 +38,12 @@ public class EmbeddedWorkflow : MonoBehaviour
 
     private void Move(InputAction.CallbackContext value)
     {
-        Debug.Log(value.ReadValue<Vector2>().normalized);
+        direction = value.ReadValue<Vector2>().normalized;
     }
 
     private void StopMove(InputAction.CallbackContext value)
     {
-        Debug.Log(value.ReadValue<Vector2>().normalized);
+        direction = value.ReadValue<Vector2>().normalized;
     }
 
     private void Jump(InputAction.CallbackContext value)
@@ -57,11 +61,16 @@ public class EmbeddedWorkflow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(moveAction.ReadValue<Vector2>().normalized);
+        //direction = moveAction.ReadValue<Vector2>().normalized;
 
         if (exampleBool)
         {
 
         }
+    }
+
+    private void FixedUpdate()
+    {
+        rb2D.velocity = direction * speed;
     }
 }
