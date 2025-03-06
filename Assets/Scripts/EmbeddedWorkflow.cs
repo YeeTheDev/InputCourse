@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class EmbeddedWorkflow : MonoBehaviour
 {
     public InputAction jumpAction;
+    public InputAction moveAction;
     private bool exampleBool;
 
     // Start is called before the first frame update
@@ -14,13 +15,31 @@ public class EmbeddedWorkflow : MonoBehaviour
         jumpAction.performed += Jump;
         jumpAction.canceled += StopJump;
         jumpAction.Enable();
+
+        moveAction.performed += Move;
+        moveAction.canceled += StopMove;
+        moveAction.Enable();
     }
 
     private void OnDisable()
     {
+        moveAction.Disable();
+        moveAction.performed -= Move;
+        moveAction.canceled -= StopMove;
+
+        jumpAction.Disable();
         jumpAction.performed -= Jump;
         jumpAction.canceled -= StopJump;
-        jumpAction.Disable();
+    }
+
+    private void Move(InputAction.CallbackContext value)
+    {
+        Debug.Log(value.ReadValue<Vector2>().normalized);
+    }
+
+    private void StopMove(InputAction.CallbackContext value)
+    {
+        Debug.Log(value.ReadValue<Vector2>().normalized);
     }
 
     private void Jump(InputAction.CallbackContext value)
@@ -38,6 +57,8 @@ public class EmbeddedWorkflow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(moveAction.ReadValue<Vector2>().normalized);
+
         if (exampleBool)
         {
 
