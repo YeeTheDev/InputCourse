@@ -10,6 +10,9 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Rigidbody2D rb;
 
+    [Header("Jump")]
+    [SerializeField] float jumpForce;
+
     private bool facingRight = true;
 
     private void Update()
@@ -20,6 +23,7 @@ public class PlayerControls : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Jump();
     }
 
     private void Move()
@@ -38,6 +42,15 @@ public class PlayerControls : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             facingRight = !facingRight;
+        }
+    }
+
+    private void Jump()
+    {
+        if (input.tryToJump)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            input.tryToJump = false;
         }
     }
 }

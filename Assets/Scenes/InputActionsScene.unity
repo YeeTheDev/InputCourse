@@ -2874,7 +2874,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1705438542
 MonoBehaviour:
@@ -2906,6 +2906,7 @@ MonoBehaviour:
   input: {fileID: 1705438542}
   speed: 5
   rb: {fileID: 1705438541}
+  jumpForce: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
