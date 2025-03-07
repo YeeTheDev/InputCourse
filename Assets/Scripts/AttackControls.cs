@@ -6,17 +6,30 @@ public class AttackControls : MonoBehaviour
 {
     [SerializeField] private GatherInput input;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private Animator animator;
+    public bool attackStarted;
 
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     void Update()
     {
         if (input.tryToAttack)
         {
+            if (attackStarted == false)
+            {
+                attackStarted = true;
+                animator.SetBool("Attack", attackStarted);
+            }
+
             input.tryToAttack = false;
         }
+    }
+
+    public void ResetAttack()
+    {
+        attackStarted = false;
+        animator.SetBool("Attack", attackStarted);
     }
 }
