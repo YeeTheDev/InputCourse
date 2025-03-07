@@ -21,10 +21,17 @@ public class PlayerControls : MonoBehaviour
 
     private bool grounded;
     private bool facingRight = true;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
         Flip();
+        SetAnimationValues();
     }
 
     private void FixedUpdate()
@@ -74,5 +81,10 @@ public class PlayerControls : MonoBehaviour
             grounded = true;
         else
             grounded = false;
+    }
+
+    private void SetAnimationValues()
+    {
+        animator.SetFloat("SpeedX", Mathf.Abs(rb.velocity.x));
     }
 }
