@@ -19,7 +19,7 @@
                     "type": "Button",
                     "id": "15a57ebd-5662-4bff-af1d-4929997a1c2d",
                     "expectedControlType": "Button",
-                    "processors": "",
+                    "processors": "Scale(factor=2)",
                     "interactions": "",
                     "initialStateCheck": false
                 },
@@ -36,6 +36,24 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "33c80d65-cb9c-42ad-b9be-1e171db6630a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "8fe1d21e-680c-42d7-a3cc-c9ec5a305330",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpecialAttack",
+                    "type": "Button",
+                    "id": "6e79a3c5-3510-4322-b78a-e6554eb229a9",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -218,6 +236,50 @@
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ceb7f4a9-3ede-45a8-9104-babdf63e47d7",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "bb072a5b-9240-48e2-b346-99fffa1de545",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialAttack",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "5588a1f1-d3da-4329-b0c4-b50f0de53f85",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SpecialAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "183ce10c-5bd9-4813-b826-46650c5b7c8f",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SpecialAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

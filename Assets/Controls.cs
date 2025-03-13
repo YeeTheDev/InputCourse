@@ -41,7 +41,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""15a57ebd-5662-4bff-af1d-4929997a1c2d"",
                     ""expectedControlType"": ""Button"",
-                    ""processors"": """",
+                    ""processors"": ""Scale(factor=2)"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
@@ -58,6 +58,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""33c80d65-cb9c-42ad-b9be-1e171db6630a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""8fe1d21e-680c-42d7-a3cc-c9ec5a305330"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e79a3c5-3510-4322-b78a-e6554eb229a9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -240,6 +258,50 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ceb7f4a9-3ede-45a8-9104-babdf63e47d7"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""bb072a5b-9240-48e2-b346-99fffa1de545"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""5588a1f1-d3da-4329-b0c4-b50f0de53f85"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""183ce10c-5bd9-4813-b826-46650c5b7c8f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -280,6 +342,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_PlayerNormal_MoveHorizontal = m_PlayerNormal.FindAction("MoveHorizontal", throwIfNotFound: true);
         m_PlayerNormal_MoveVertical = m_PlayerNormal.FindAction("MoveVertical", throwIfNotFound: true);
         m_PlayerNormal_Attack = m_PlayerNormal.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerNormal_Newaction = m_PlayerNormal.FindAction("New action", throwIfNotFound: true);
+        m_PlayerNormal_SpecialAttack = m_PlayerNormal.FindAction("SpecialAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -345,6 +409,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerNormal_MoveHorizontal;
     private readonly InputAction m_PlayerNormal_MoveVertical;
     private readonly InputAction m_PlayerNormal_Attack;
+    private readonly InputAction m_PlayerNormal_Newaction;
+    private readonly InputAction m_PlayerNormal_SpecialAttack;
     public struct PlayerNormalActions
     {
         private @Controls m_Wrapper;
@@ -353,6 +419,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @MoveHorizontal => m_Wrapper.m_PlayerNormal_MoveHorizontal;
         public InputAction @MoveVertical => m_Wrapper.m_PlayerNormal_MoveVertical;
         public InputAction @Attack => m_Wrapper.m_PlayerNormal_Attack;
+        public InputAction @Newaction => m_Wrapper.m_PlayerNormal_Newaction;
+        public InputAction @SpecialAttack => m_Wrapper.m_PlayerNormal_SpecialAttack;
         public InputActionMap Get() { return m_Wrapper.m_PlayerNormal; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -374,6 +442,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+            @SpecialAttack.started += instance.OnSpecialAttack;
+            @SpecialAttack.performed += instance.OnSpecialAttack;
+            @SpecialAttack.canceled += instance.OnSpecialAttack;
         }
 
         private void UnregisterCallbacks(IPlayerNormalActions instance)
@@ -390,6 +464,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+            @SpecialAttack.started -= instance.OnSpecialAttack;
+            @SpecialAttack.performed -= instance.OnSpecialAttack;
+            @SpecialAttack.canceled -= instance.OnSpecialAttack;
         }
 
         public void RemoveCallbacks(IPlayerNormalActions instance)
@@ -431,5 +511,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMoveHorizontal(InputAction.CallbackContext context);
         void OnMoveVertical(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnNewaction(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
     }
 }

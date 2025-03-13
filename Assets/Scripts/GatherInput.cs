@@ -27,6 +27,8 @@ public class GatherInput : MonoBehaviour
         myControls.PlayerNormal.Attack.performed += AttackExample;
         myControls.PlayerNormal.Attack.canceled += AttackStopExample;
 
+        myControls.PlayerNormal.SpecialAttack.performed += SpecialExample;
+
         myControls.Enable();
     }
 
@@ -39,6 +41,8 @@ public class GatherInput : MonoBehaviour
 
         myControls.PlayerNormal.Attack.performed -= AttackExample;
         myControls.PlayerNormal.Attack.canceled -= AttackStopExample;
+
+        myControls.PlayerNormal.SpecialAttack.performed -= SpecialExample;
     }
 
 
@@ -69,5 +73,10 @@ public class GatherInput : MonoBehaviour
     {
         //tryToJump = value.ReadValueAsButton();
         tryToAttack = false;
+    }
+
+    private void SpecialExample(InputAction.CallbackContext value)
+    {
+        Debug.Log("Special Attack");
     }
 }
