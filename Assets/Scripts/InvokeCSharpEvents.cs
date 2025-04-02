@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InvokeCSharpEvents : MonoBehaviour
 {
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float speed;
     private Vector2 direction;
@@ -38,13 +39,20 @@ public class InvokeCSharpEvents : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator.SetFloat("ValueY", -1);
     }
 
     // Update is called once per frame
     void Update()
     {
         direction = moveAction.ReadValue<Vector2>();
+        if (direction != Vector2.zero)
+        {
+            animator.SetFloat("ValueX", direction.x);
+            animator.SetFloat("ValueY", direction.y);
+            animator.SetBool("IsMoving", true);
+        }
+        else { animator.SetBool("IsMoving", false); }
     }
 
     private void FixedUpdate()
