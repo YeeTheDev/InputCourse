@@ -1,54 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GatherInput : MonoBehaviour
 {
-    private Controls myControls;
+    [SerializeField] private PlayerInput playerInput;
+
+    private InputActionMap playerNormalActionMap;
+    private InputAction move;
+    private InputAction moveVertical;
+    private InputAction jump;
+    private InputAction attack;
+    private InputAction specialAttack;
 
     public float valueX;
     public bool tryToJump;
     public bool tryToAttack;
 
-    private void Awake()
-    {
-        myControls = new Controls();
-    }
-
     private void OnEnable()
     {
-        //myControls.PlayerNormal.Enable();
-        //myControls.PlayerNormal.Jump.Enable();
+        playerNormalActionMap = playerInput.actions.FindActionMap("PlayerNormal");
+        move = playerInput.actions["MoveHorizontal"];
+        moveVertical = playerInput.actions["MoveVertical"];
+        jump = playerInput.actions["Jump"];
+        attack = playerInput.actions["Attack"];
+        specialAttack = playerInput.actions["SpecialAttack"];
 
-        myControls.PlayerNormal.Jump.performed += JumpExample;
-        myControls.PlayerNormal.Jump.canceled += JumpStopExample;
+        jump.performed += JumpExample;
 
-        myControls.PlayerNormal.Attack.performed += AttackExample;
-        myControls.PlayerNormal.Attack.canceled += AttackStopExample;
+        attack.performed += AttackExample;
+        attack.canceled += AttackStopExample;
 
-        myControls.PlayerNormal.SpecialAttack.performed += SpecialExample;
-
-        myControls.Enable();
+        specialAttack.performed += SpecialExample;
+        specialAttack.canceled += StopSpecialExample;
     }
 
     private void OnDisable()
     {
-        myControls.Disable();
+        jump.performed -= JumpExample;
 
-        myControls.PlayerNormal.Jump.performed -= JumpExample;
-        myControls.PlayerNormal.Jump.canceled -= JumpStopExample;
+        attack.performed -= AttackExample;
+        attack.canceled -= AttackStopExample;
 
-        myControls.PlayerNormal.Attack.performed -= AttackExample;
-        myControls.PlayerNormal.Attack.canceled -= AttackStopExample;
+        specialAttack.performed -= SpecialExample;
+        specialAttack.canceled -= StopSpecialExample;
 
-        myControls.PlayerNormal.SpecialAttack.performed -= SpecialExample;
+        playerNormalActionMap.Disable();
     }
 
 
     void Update()
     {
-        valueX = myControls.PlayerNormal.MoveHorizontal.ReadValue<float>();
+        valueX = move.ReadValue<float>();
     }
 
     private void JumpExample(InputAction.CallbackContext value)
@@ -76,6 +78,11 @@ public class GatherInput : MonoBehaviour
     }
 
     private void SpecialExample(InputAction.CallbackContext value)
+    {
+        Debug.Log("Special Attack");
+    }
+
+    private void StopSpecialExample(InputAction.CallbackContext value)
     {
         Debug.Log("Special Attack");
     }
