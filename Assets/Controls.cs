@@ -80,6 +80,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CanvasToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""a53433c0-38e7-40d8-8254-303497ae00e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -302,6 +311,61 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier Gamepad"",
+                    ""id"": ""03c618c3-dcb3-4e26-9178-e29b6e335542"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""cf5d5b84-9487-4a16-9e9f-e741f8fe86bc"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""dd14b51f-e2f4-468e-b291-0ba85c18ff4d"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0299936-0cd2-4d74-ba0c-5c18031500da"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""CanvasToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2684bbb6-5a51-4ee9-8bdb-c23562ef3249"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""CanvasToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -344,6 +408,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_PlayerNormal_Attack = m_PlayerNormal.FindAction("Attack", throwIfNotFound: true);
         m_PlayerNormal_Newaction = m_PlayerNormal.FindAction("New action", throwIfNotFound: true);
         m_PlayerNormal_SpecialAttack = m_PlayerNormal.FindAction("SpecialAttack", throwIfNotFound: true);
+        m_PlayerNormal_CanvasToggle = m_PlayerNormal.FindAction("CanvasToggle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -411,6 +476,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerNormal_Attack;
     private readonly InputAction m_PlayerNormal_Newaction;
     private readonly InputAction m_PlayerNormal_SpecialAttack;
+    private readonly InputAction m_PlayerNormal_CanvasToggle;
     public struct PlayerNormalActions
     {
         private @Controls m_Wrapper;
@@ -421,6 +487,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_PlayerNormal_Attack;
         public InputAction @Newaction => m_Wrapper.m_PlayerNormal_Newaction;
         public InputAction @SpecialAttack => m_Wrapper.m_PlayerNormal_SpecialAttack;
+        public InputAction @CanvasToggle => m_Wrapper.m_PlayerNormal_CanvasToggle;
         public InputActionMap Get() { return m_Wrapper.m_PlayerNormal; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -448,6 +515,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @SpecialAttack.started += instance.OnSpecialAttack;
             @SpecialAttack.performed += instance.OnSpecialAttack;
             @SpecialAttack.canceled += instance.OnSpecialAttack;
+            @CanvasToggle.started += instance.OnCanvasToggle;
+            @CanvasToggle.performed += instance.OnCanvasToggle;
+            @CanvasToggle.canceled += instance.OnCanvasToggle;
         }
 
         private void UnregisterCallbacks(IPlayerNormalActions instance)
@@ -470,6 +540,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @SpecialAttack.started -= instance.OnSpecialAttack;
             @SpecialAttack.performed -= instance.OnSpecialAttack;
             @SpecialAttack.canceled -= instance.OnSpecialAttack;
+            @CanvasToggle.started -= instance.OnCanvasToggle;
+            @CanvasToggle.performed -= instance.OnCanvasToggle;
+            @CanvasToggle.canceled -= instance.OnCanvasToggle;
         }
 
         public void RemoveCallbacks(IPlayerNormalActions instance)
@@ -513,5 +586,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnNewaction(InputAction.CallbackContext context);
         void OnSpecialAttack(InputAction.CallbackContext context);
+        void OnCanvasToggle(InputAction.CallbackContext context);
     }
 }

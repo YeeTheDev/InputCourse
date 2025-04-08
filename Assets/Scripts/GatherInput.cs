@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class GatherInput : MonoBehaviour
 {
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private GameObject canvasObject;
 
     private InputActionMap playerNormalActionMap;
     private InputAction move;
@@ -11,6 +12,7 @@ public class GatherInput : MonoBehaviour
     private InputAction jump;
     private InputAction attack;
     private InputAction specialAttack;
+    private InputAction canvasToggle;
 
     public float valueX;
     public bool tryToJump;
@@ -24,6 +26,7 @@ public class GatherInput : MonoBehaviour
         jump = playerInput.actions["Jump"];
         attack = playerInput.actions["Attack"];
         specialAttack = playerInput.actions["SpecialAttack"];
+        canvasToggle = playerInput.actions["CanvasToggle"];
 
         jump.performed += JumpExample;
 
@@ -32,6 +35,8 @@ public class GatherInput : MonoBehaviour
 
         specialAttack.performed += SpecialExample;
         specialAttack.canceled += StopSpecialExample;
+
+        canvasToggle.performed += CanvasControl;
     }
 
     private void OnDisable()
@@ -44,6 +49,8 @@ public class GatherInput : MonoBehaviour
         specialAttack.performed -= SpecialExample;
         specialAttack.canceled -= StopSpecialExample;
 
+        canvasToggle.performed -= CanvasControl;
+
         playerNormalActionMap.Disable();
     }
 
@@ -51,6 +58,11 @@ public class GatherInput : MonoBehaviour
     void Update()
     {
         valueX = move.ReadValue<float>();
+    }
+
+    private void CanvasControl(InputAction.CallbackContext value)
+    {
+        canvasObject.SetActive(!canvasObject.activeSelf);
     }
 
     private void JumpExample(InputAction.CallbackContext value)
