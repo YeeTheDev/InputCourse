@@ -321,6 +321,12 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindOperation.Start();
         }
 
+        private void Start()
+        {
+            UpdateActionLabel();
+            UpdateBindingDisplay();
+        }
+
         protected void OnEnable()
         {
             if (s_RebindActionUIs == null)

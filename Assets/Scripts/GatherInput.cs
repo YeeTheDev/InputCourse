@@ -37,6 +37,10 @@ public class GatherInput : MonoBehaviour
         specialAttack.canceled += StopSpecialExample;
 
         canvasToggle.performed += CanvasControl;
+
+        var rebinds = PlayerPrefs.GetString("rebinds");
+        if (!string.IsNullOrEmpty(rebinds))
+            playerInput.actions.LoadBindingOverridesFromJson(rebinds);
     }
 
     private void OnDisable()
