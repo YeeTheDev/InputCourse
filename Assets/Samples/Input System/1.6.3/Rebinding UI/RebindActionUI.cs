@@ -253,6 +253,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             }
         }
 
+        private string pathBeforeThisRebind;
+
         private void PerformInteractiveRebind(InputAction action, int bindingIndex, bool allCompositeParts = false)
         {
             m_RebindOperation?.Cancel(); // Will null out m_RebindOperation.
@@ -264,6 +266,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             }
 
             action.Disable();
+
+            pathBeforeThisRebind = action.bindings[bindingIndex].effectivePath;
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex).WithCancelingThrough("<Keyboard>/escape")
@@ -284,6 +288,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                     {
                         m_RebindOverlay?.SetActive(false);
                         m_RebindStopEvent?.Invoke(this, operation);
+
+                        CheckAndSwapDuplicates(action, bindingIndex, pathBeforeThisRebind);
+
                         UpdateBindingDisplay();
                         CleanUp();
 
@@ -323,6 +330,46 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);
 
             m_RebindOperation.Start();
+        }
+
+        private void CheckAndSwapDuplicates(InputAction action, int bindingIndex, string pathBeforeRebind)
+        {
+            InputBinding currentBinding = action.bindings[bindingIndex];
+            bool canBreak = false;
+
+            foreach (InputAction otherAction in action.actionMap)
+            {
+                if (canBreak) { break; }
+
+                int otherBindingIndex = -1;
+                if (otherAction != action)
+                {
+                    foreach (InputBinding otherBinding in otherAction.bindings)
+                    {
+                        otherBindingIndex++;
+                        if (otherBinding.effectivePath == currentBinding.effectivePath)
+                        {
+                            otherAction.ApplyBindingOverride(otherBindingIndex, pathBeforeRebind);
+                            canBreak = true;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (InputBinding otherBinding in otherAction.bindings)
+                    {
+                        otherBindingIndex++;
+                        if (otherBinding.isPartOfComposite && otherBindingIndex != bindingIndex)
+                        {
+                            if (otherBinding.effectivePath == currentBinding.effectivePath)
+                            {
+                                otherAction.ApplyBindingOverride(otherBindingIndex, pathBeforeRebind);
+                                canBreak = true;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void Start()
